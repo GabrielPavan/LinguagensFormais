@@ -13,12 +13,16 @@ public class ProcessarGramatica {
 		return resultado;
 	}
 	
-	public ProcessarGramatica(Gramatica pGramatica) {	
+	public ProcessarGramatica(Gramatica pGramatica) throws Exception {	
 		gramatica = pGramatica;
-		geraSentença('S', gramatica.gramatica.get("S"));
+		geraSentença('S', gramatica.gramatica.get('S'));
 	}
 	
-	private void geraSentença(char key, List<String> values) {
+	private void geraSentença(char key, List<String> values) throws Exception {
+		if(values == null) {
+			throw new Exception("Letra " + key + " não possue valores");
+		}
+		
 		Random random = new Random();
 		String value = values.get(random.nextInt(values.size()));
 		
@@ -30,7 +34,7 @@ public class ProcessarGramatica {
 			char caractere = value.charAt(i);
 			
 			if(Character.isUpperCase(caractere)) {
-				geraSentença(caractere, gramatica.gramatica.get("" + caractere));
+				geraSentença(caractere, gramatica.gramatica.get(caractere));
 				continue;
 			}
 			resultado.add(caractere);

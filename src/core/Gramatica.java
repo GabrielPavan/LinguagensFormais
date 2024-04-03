@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Gramatica {
 	
-	public Map<String, List<String>> gramatica = new LinkedHashMap<String, List<String>>();
+	public Map<Character, List<String>> gramatica = new LinkedHashMap<Character, List<String>>();
 
 	public Gramatica(String pGramatica) throws Exception {
 		setGramatica(pGramatica);
@@ -23,15 +23,18 @@ public class Gramatica {
 		}
 		
 		String[] parte02 = null;
+		
 		for (String strings01 : parte01) {
 			if(strings01.contains("=")) {
 				parte02 = strings01.split("=");
 			} else {
 				throw new Exception("Não foi possivel encontrar o spliter!");
 			}
-			String key = parte02[0];
+			
+			char key = parte02[0].charAt(0);
 		
 			String parte03[] = null;
+			
 			ArrayList<String> values = new ArrayList<String>();
 			if(parte02[1].contains("|")) {
 				parte03 = parte02[1].split("\\|");
@@ -41,6 +44,7 @@ public class Gramatica {
 			} else {
 				values.add(parte02[1]);
 			}
+			
 			gramatica.put(key, values);
 		}
 	}

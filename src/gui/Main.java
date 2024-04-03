@@ -49,7 +49,7 @@ public class Main extends JFrame {
 		
 		JSeparator separator02 = new JSeparator();
 		separator02.setOrientation(SwingConstants.VERTICAL);
-		separator02.setBounds(260, 10, 5, 300);
+		separator02.setBounds(260, 10, 5, 325);
 		contentPane.add(separator02);
 		
 		JLabel lblResultado = new JLabel("Resultado:");
@@ -61,7 +61,7 @@ public class Main extends JFrame {
 		contentPane.add(textAreaResultado);
 		
 		JSeparator separator01_1 = new JSeparator();
-		separator01_1.setBounds(275, 150, 475, 5);
+		separator01_1.setBounds(275, 157, 475, 5);
 		contentPane.add(separator01_1);
 		
 		JLabel lblExemplo1 = new JLabel("Exemplo 01:");
@@ -85,12 +85,12 @@ public class Main extends JFrame {
 		contentPane.add(lblGramaticaExemplo02);
 		
 		JTextArea textAreaExemplo02 = new JTextArea();
-		textAreaExemplo02.setBounds(275, 215, 225, 110);
+		textAreaExemplo02.setBounds(275, 220, 225, 110);
 		contentPane.add(textAreaExemplo02);
 		
 		JSeparator separator02_1 = new JSeparator();
 		separator02_1.setOrientation(SwingConstants.VERTICAL);
-		separator02_1.setBounds(510, 160, 5, 165);
+		separator02_1.setBounds(510, 170, 5, 160);
 		contentPane.add(separator02_1);
 		
 		JLabel lblExemplo3 = new JLabel("Exemplo 03:");
@@ -102,7 +102,7 @@ public class Main extends JFrame {
 		contentPane.add(lblGramaticaExemplo03);
 		
 		JTextArea textAreaExemplo03 = new JTextArea();
-		textAreaExemplo03.setBounds(525, 215, 225, 110);
+		textAreaExemplo03.setBounds(525, 220, 225, 110);
 		contentPane.add(textAreaExemplo03);
 		
 		JButton btnLimpar = new JButton("Limpar");
@@ -122,14 +122,22 @@ public class Main extends JFrame {
 		btnProcessar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					textAreaExemplo01.setText(new ProcessarGramatica(new Gramatica(lblGramaticaExemplo01.getText())).getResultado().toString());
-					textAreaExemplo02.setText(new ProcessarGramatica(new Gramatica(lblGramaticaExemplo02.getText())).getResultado().toString());
-					textAreaExemplo03.setText(new ProcessarGramatica(new Gramatica(lblGramaticaExemplo03.getText())).getResultado().toString());
+					ProcessarGramatica exemplo1 = new ProcessarGramatica(new Gramatica(lblGramaticaExemplo01.getText()));
+					ProcessarGramatica exemplo2 = new ProcessarGramatica(new Gramatica(lblGramaticaExemplo02.getText()));
+					ProcessarGramatica exemplo3 = new ProcessarGramatica(new Gramatica(lblGramaticaExemplo03.getText()));
+					
+					textAreaExemplo01.setText(exemplo1.getResultado().toString());
+					textAreaExemplo02.setText(exemplo2.getResultado().toString());
+					textAreaExemplo03.setText(exemplo3.getResultado().toString());
+					
 					if(textAreaInserirGramatica.getText().length() > 0) {
-						textAreaResultado.setText(new ProcessarGramatica(new Gramatica(textAreaInserirGramatica.getText())).getResultado().toString());
+						ProcessarGramatica gramaticaInserida = new ProcessarGramatica(new Gramatica(textAreaInserirGramatica.getText()));
+						textAreaResultado.setText(gramaticaInserida.getResultado().toString());
 					}
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
+				} catch (StackOverflowError e2) {
+					JOptionPane.showMessageDialog(null, "Gramatica incorreta, gerou um loop infinito.");
 				}
 			}
 		});
