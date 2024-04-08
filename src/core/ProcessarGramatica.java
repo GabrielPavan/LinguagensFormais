@@ -2,42 +2,58 @@ package core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ProcessarGramatica {
 	
-	private Gramatica gramatica;
-	private List<Character> resultado = new ArrayList<Character>();
-
-	public List<Character> getResultado() {
+	private List<String> valoresSelecionados = new ArrayList<String>();
+	private List<String> etapas = new ArrayList<String>();
+	private String resultado = "";
+	
+	public void resetVariaveis() {
+		resultado = "";
+		valoresSelecionados = new ArrayList<String>();
+		etapas = new ArrayList<String>();
+	}
+	
+	public String getResultadoFinal() {
 		return resultado;
 	}
-	
-	public ProcessarGramatica(Gramatica pGramatica) throws Exception {	
-		gramatica = pGramatica;
-		geraSentença('S', gramatica.gramatica.get('S'));
+	public String getValores(){
+		return valoresSelecionados.toString();
+	}
+	public String getResultadoCompleto() {
+		return getValores().concat("\n").concat(getResultadoFinal());
+	}
+	public String getOrdemResultado() {
+		String result = "";
+		for (int i = 0; i < etapas.size(); i++) {
+			result = result.concat(etapas.get(i)).concat("\n");
+		}
+		return result;
 	}
 	
-	private void geraSentença(char key, List<String> values) throws Exception {
-		if(values == null) {
-			throw new Exception("Letra " + key + " não possue valores");
-		}
-		
-		Random random = new Random();
-		String value = values.get(random.nextInt(values.size()));
+	public void geraSentenca(Character key, Gramatica pGramatica) throws Exception {
+		String value = pGramatica.getRandomValue(key);
+		valoresSelecionados.add(value);
 		
 		if (value.equals("?")) {
+			resultado = resultado.replace(key.toString(), "");
+			etapas.add(resultado);
 			return;
 		}
 		
+		if (resultado.isEmpty()) {
+			resultado = value;
+		} else {
+			resultado = resultado.replace(key.toString(), value);
+		}
+		etapas.add(resultado);
+		
 		for (int i = 0; i < value.length(); i++) {
 			char caractere = value.charAt(i);
-			
 			if(Character.isUpperCase(caractere)) {
-				geraSentença(caractere, gramatica.gramatica.get(caractere));
-				continue;
+				geraSentenca(caractere, pGramatica);
 			}
-			resultado.add(caractere);
 		}
 	}
 }

@@ -25,7 +25,7 @@ public class Main extends JFrame {
 		setTitle("Validar gramática");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 780, 385);
+		setBounds(100, 100, 780, 375);
 		contentPane = new JPanel();
 
 		setContentPane(contentPane);
@@ -56,10 +56,6 @@ public class Main extends JFrame {
 		lblResultado.setBounds(275, 10, 90, 15);
 		contentPane.add(lblResultado);
 		
-		JTextArea textAreaResultado = new JTextArea();
-		textAreaResultado.setBounds(275, 30, 459, 80);
-		contentPane.add(textAreaResultado);
-		
 		JSeparator separator01_1 = new JSeparator();
 		separator01_1.setBounds(275, 157, 475, 5);
 		contentPane.add(separator01_1);
@@ -72,10 +68,6 @@ public class Main extends JFrame {
 		lblGramaticaExemplo01.setBounds(20, 189, 200, 15);
 		contentPane.add(lblGramaticaExemplo01);
 		
-		JTextArea textAreaExemplo01 = new JTextArea();
-		textAreaExemplo01.setBounds(20, 220, 225, 110);
-		contentPane.add(textAreaExemplo01);
-		
 		JLabel lblExemplo2 = new JLabel("Exemplo 02:");
 		lblExemplo2.setBounds(275, 170, 80, 15);
 		contentPane.add(lblExemplo2);
@@ -83,10 +75,6 @@ public class Main extends JFrame {
 		JLabel lblGramaticaExemplo02 = new JLabel("S=aA;A=?|aB|bC|cC;B=aA;C=bC|cC|?");
 		lblGramaticaExemplo02.setBounds(275, 189, 273, 15);
 		contentPane.add(lblGramaticaExemplo02);
-		
-		JTextArea textAreaExemplo02 = new JTextArea();
-		textAreaExemplo02.setBounds(275, 220, 225, 110);
-		contentPane.add(textAreaExemplo02);
 		
 		JSeparator separator02_1 = new JSeparator();
 		separator02_1.setOrientation(SwingConstants.VERTICAL);
@@ -101,9 +89,33 @@ public class Main extends JFrame {
 		lblGramaticaExemplo03.setBounds(525, 189, 209, 15);
 		contentPane.add(lblGramaticaExemplo03);
 		
+		JScrollPane scrollPane02 = new JScrollPane();
+		scrollPane02.setBounds(20, 215, 225, 110);
+		contentPane.add(scrollPane02);
+		
+		JTextArea textAreaExemplo01 = new JTextArea();
+		scrollPane02.setViewportView(textAreaExemplo01);
+		
+		JScrollPane scrollPane03 = new JScrollPane();
+		scrollPane03.setBounds(275, 215, 225, 110);
+		contentPane.add(scrollPane03);
+		
+		JTextArea textAreaExemplo02 = new JTextArea();
+		scrollPane03.setViewportView(textAreaExemplo02);
+		
+		JScrollPane scrollPane04 = new JScrollPane();
+		scrollPane04.setBounds(525, 215, 225, 110);
+		contentPane.add(scrollPane04);
+		
 		JTextArea textAreaExemplo03 = new JTextArea();
-		textAreaExemplo03.setBounds(525, 220, 225, 110);
-		contentPane.add(textAreaExemplo03);
+		scrollPane04.setViewportView(textAreaExemplo03);
+		
+		JScrollPane scrollPane05 = new JScrollPane();
+		scrollPane05.setBounds(275, 30, 225, 110);
+		contentPane.add(scrollPane05);
+		
+		JTextArea textAreaResultado = new JTextArea();
+		scrollPane05.setViewportView(textAreaResultado);
 		
 		JButton btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -122,17 +134,29 @@ public class Main extends JFrame {
 		btnProcessar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ProcessarGramatica exemplo1 = new ProcessarGramatica(new Gramatica(lblGramaticaExemplo01.getText()));
-					ProcessarGramatica exemplo2 = new ProcessarGramatica(new Gramatica(lblGramaticaExemplo02.getText()));
-					ProcessarGramatica exemplo3 = new ProcessarGramatica(new Gramatica(lblGramaticaExemplo03.getText()));
+					ProcessarGramatica processarGramatica = new ProcessarGramatica();
+					Gramatica gramatica = new Gramatica();
 					
-					textAreaExemplo01.setText(exemplo1.getResultado().toString());
-					textAreaExemplo02.setText(exemplo2.getResultado().toString());
-					textAreaExemplo03.setText(exemplo3.getResultado().toString());
+					gramatica.createGramatica(lblGramaticaExemplo01.getText());
+					processarGramatica.geraSentenca('S', gramatica);
+					textAreaExemplo01.setText(processarGramatica.getOrdemResultado());
+					processarGramatica.resetVariaveis();
+					
+					gramatica.createGramatica(lblGramaticaExemplo02.getText());
+					processarGramatica.geraSentenca('S', gramatica);
+					textAreaExemplo02.setText(processarGramatica.getOrdemResultado());
+					processarGramatica.resetVariaveis();
+					
+					gramatica.createGramatica(lblGramaticaExemplo03.getText());
+					processarGramatica.geraSentenca('S', gramatica);
+					textAreaExemplo03.setText(processarGramatica.getOrdemResultado());
+					processarGramatica.resetVariaveis();
 					
 					if(textAreaInserirGramatica.getText().length() > 0) {
-						ProcessarGramatica gramaticaInserida = new ProcessarGramatica(new Gramatica(textAreaInserirGramatica.getText()));
-						textAreaResultado.setText(gramaticaInserida.getResultado().toString());
+						gramatica.createGramatica(textAreaInserirGramatica.getText());
+						processarGramatica.geraSentenca('S', gramatica);
+						textAreaResultado.setText(processarGramatica.getOrdemResultado());
+						processarGramatica.resetVariaveis();
 					}
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -143,5 +167,9 @@ public class Main extends JFrame {
 		});
 		btnProcessar.setBounds(145, 120, 100, 25);
 		contentPane.add(btnProcessar);
+		
+		JLabel lblApresentacao = new JLabel("Trabalho de linguagens formais 6° Fase");
+		lblApresentacao.setBounds(525, 10, 225, 130);
+		contentPane.add(lblApresentacao);
 	}
 }

@@ -4,16 +4,29 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Gramatica {
 	
-	public Map<Character, List<String>> gramatica = new LinkedHashMap<Character, List<String>>();
+	private Map<Character, List<String>> gramatica;
 
-	public Gramatica(String pGramatica) throws Exception {
-		setGramatica(pGramatica);
+	public List<String> getValues(Character character) throws Exception {
+		List<String> values = gramatica.get(character);
+		if(values != null) {
+			return values;
+		} else {
+			throw new Exception("Não há valores para essa chave: " + character);
+		}
+	}
+	public String getRandomValue(Character character) throws Exception {
+		Random random = new Random();
+		List<String> values = getValues(character);
+		return values.get(random.nextInt(values.size()));
 	}
 	
-	public void setGramatica(String pGramatica) throws Exception {
+	public void createGramatica(String pGramatica) throws Exception {
+		gramatica = new LinkedHashMap<Character, List<String>>();
+		
 		String[] parte01 = null;
 		if(pGramatica.contains(";")) {
 			parte01 = pGramatica.split(";");
@@ -31,7 +44,7 @@ public class Gramatica {
 				throw new Exception("Não foi possivel encontrar o spliter!");
 			}
 			
-			char key = parte02[0].charAt(0);
+			Character key = parte02[0].charAt(0);
 		
 			String parte03[] = null;
 			
@@ -44,7 +57,6 @@ public class Gramatica {
 			} else {
 				values.add(parte02[1]);
 			}
-			
 			gramatica.put(key, values);
 		}
 	}
