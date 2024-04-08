@@ -64,7 +64,7 @@ public class Main extends JFrame {
 		lblExemplo1.setBounds(20, 170, 80, 15);
 		contentPane.add(lblExemplo1);
 		
-		JLabel lblGramaticaExemplo01 = new JLabel("S=abA|ab;A=a|b");
+		JLabel lblGramaticaExemplo01 = new JLabel("S=aSb|Ab;A=a|b");
 		lblGramaticaExemplo01.setBounds(20, 189, 200, 15);
 		contentPane.add(lblGramaticaExemplo01);
 		
